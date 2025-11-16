@@ -1,4 +1,7 @@
 from django.shortcuts import render
+from django.shortcuts import render, reverse
+
+import recipes
 
 DATA = {
     'omlet': {
@@ -18,6 +21,24 @@ DATA = {
     },
     # можете добавить свои рецепты ;)
 }
+
+
+def home(request):
+    template_name = 'calculator/prodauct.html'
+    recipe = {}
+    for key, value in DATA.items():
+        new_key = f"Рецепт {key}"
+        recipe[new_key] = reverse('recipies', args=[key, 1])
+    return render(request, template_name, {'recipe': recipe})
+
+def product(request, recipies, b=1):
+    template_name = 'calculator/index.html'
+    foods = DATA[recipies]
+    recipe = {}
+    for food in foods:
+        recipe[food] = foods[food] * b
+    return render(request, template_name, {'recipe': recipe})
+
 
 # Напишите ваш обработчик. Используйте DATA как источник данных
 # Результат - render(request, 'calculator/index.html', context)
